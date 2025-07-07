@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1><%= @category.name %> Posts</h1>
+      <%= link_to "← All Categories", categories_path, class: "btn btn-outline-secondary" %>
+    </div>
+
+    <% if @posts.any? %>
+      <% @posts.each do |post| %>
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= link_to post.title, post, class: "text-decoration-none" %>
+            </h5>
+            <p class="card-text"><%= truncate(post.body, length: 200) %></p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <small class="text-muted">
+                  By <%= link_to post.user.username, user_path(post.user.username), class: "text-decoration-none" %>
+                </small>
+              </div>
+              <div>
+                <small class="text-muted">
+                  <%= pluralize(post.likes_count, 'like') %> • 
+                  <%= pluralize(post.comments.count, 'comment') %> • 
+                  <%= time_ago_in_words(post.created_at) %> ago
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="text-center py-5">
+        <h4>No posts in this category yet!</h4>
+        <p class="text-muted">Be the first to post in <%= @category.name %>.</p>
+        <% if logged_in? %>
+          <%= link_to "Create Post", new_post_path, class: "btn btn-primary" %>
+        <% else %>
+          <%= link_to "Sign Up", signup_path, class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

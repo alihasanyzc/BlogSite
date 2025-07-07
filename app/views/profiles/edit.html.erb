@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h3>Edit Profile</h3>
+      </div>
+      <div class="card-body">
+        <%= form_with model: @profile, url: profile_path, local: true do |form| %>
+          <% if @profile.errors.any? %>
+            <div class="alert alert-danger">
+              <h4><%= pluralize(@profile.errors.count, "error") %> prohibited this profile from being saved:</h4>
+              <ul class="mb-0">
+                <% @profile.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="mb-3">
+            <%= form.label :bio, class: "form-label" %>
+            <%= form.text_area :bio, class: "form-control", rows: 4, placeholder: "Tell us about yourself..." %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :avatar, "Profile Photo", class: "form-label" %>
+            <%= form.file_field :avatar, class: "form-control", accept: "image/*" %>
+            <div class="form-text">Choose a photo for your profile (max 5MB)</div>
+            <% if @profile.avatar.attached? %>
+              <div class="mt-2">
+                <small class="text-muted">Current photo:</small><br>
+                <%= image_tag @profile.avatar, class: "img-thumbnail", style: "width: 100px; height: 100px; object-fit: cover;" %>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="d-flex gap-2">
+            <%= form.submit "Update Profile", class: "btn btn-primary" %>
+            <%= link_to "Cancel", profile_path, class: "btn btn-secondary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

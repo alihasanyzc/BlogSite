@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body text-center">
+        <h4><%= @user.username %></h4>
+        <% if @user.profile&.bio.present? %>
+          <p><%= @user.profile.bio %></p>
+        <% end %>
+        <p class="text-muted">
+          Member since <%= @user.created_at.strftime("%B %Y") %>
+        </p>
+        <p class="text-muted">
+          <%= pluralize(@user.posts.count, 'post') %> written
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <h3><%= @user.username %>'s Posts (<%= @posts.count %>)</h3>
+
+    <% if @posts.any? %>
+      <% @posts.each do |post| %>
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= link_to post.title, post, class: "text-decoration-none" %>
+            </h5>
+            <p class="card-text"><%= truncate(post.body, length: 200) %></p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <small class="text-muted">
+                  In <%= link_to post.category.name, category_path(post.category), class: "text-decoration-none" %>
+                </small>
+              </div>
+              <div>
+                <small class="text-muted">
+                  <%= pluralize(post.likes_count, 'like') %> • 
+                  <%= pluralize(post.comments.count, 'comment') %> • 
+                  <%= time_ago_in_words(post.created_at) %> ago
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="text-center py-5">
+        <h4>No posts yet!</h4>
+        <p class="text-muted"><%= @user.username %> hasn't shared any posts yet.</p>
+      </div>
+    <% end %>
+  </div>
+</div>
